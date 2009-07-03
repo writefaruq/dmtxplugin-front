@@ -1,8 +1,8 @@
-Planned Dmtx-Daemon
-=====================
+Planned Dmtxplugin-front
+========================
 
-Main tasks of this daemon are:
-    1) To watch the creation of dmtx symbol inside its data directory via incrond interface.
+Main tasks of this program are:
+    1) Activated  by  incron interface upon creation of a dmtx symbol inside its data directory
     2) To decode this symbol into text file
     3) To call Dmtx-plugin server's D-Bus methods for creating devices
     4) To call Service D-Bus method to add services
@@ -12,7 +12,7 @@ Main tasks of this daemon are:
 
 Main daemon modules:
 =====================    
-dmtxpluginfront.c
+dmtxplugin-front.c
 symbol.c     (task #2)
 dmtxutils.c    (task #2)
 dmtxplugin-gdbus.c    (task #3)
