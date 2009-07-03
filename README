@@ -2,7 +2,7 @@ Planned Dmtx-Daemon
 =====================
 
 Main tasks of this daemon are:
-    1) To watch the creation of dmtx symbol inside its data directory via inotify interface.
+    1) To watch the creation of dmtx symbol inside its data directory via incrond interface.
     2) To decode this symbol into text file
     3) To call Dmtx-plugin server's D-Bus methods for creating devices
     4) To call Service D-Bus method to add services
@@ -12,12 +12,11 @@ Main tasks of this daemon are:
 
 Main daemon modules:
 =====================    
-dmtxd.c
-inotify.c    (task #1)
+dmtxpluginfront.c
 symbol.c     (task #2)
 dmtxutils.c    (task #2)
 dmtxplugin-gdbus.c    (task #3)
 service-gdbus.c    (task #4)
 
 For more information, visit:
-  http://github.com/writefaruq/dmtx-daemon
+  http://github.com/writefaruq/dmtxplugin-front
