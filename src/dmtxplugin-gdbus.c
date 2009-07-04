@@ -30,19 +30,34 @@ static void element_start(GMarkupParseContext *context,
 {
 	struct context_data *ctx_data = user_data;
 
-	if (!strcmp(element_name, "bdaddr"))
-		return;
+        const gchar **name_cursor = attribute_names;
+        const gchar **value_cursor = attribute_values;
+        char *bdaddr;
 
-	if (!strcmp(element_name, "text")) {
+	printf("[[ -- Start  ---\n");
+	if (!strcmp(element_name, "bdaddr")){
+	        //printf("XML parser: not bdaddr\n");
+		return;
+	}
+
+
+	if (!strcmp(element_name, "text") && !(ctx_data->found)) {
+	        printf("Got text of ");
 		int i;
 		for (i = 0; attribute_names[i]; i++) {
-			if (!strcmp(attribute_names[i], "value")) {
-				ctx_data->bdaddr = g_strdup(attribute_values[i] + 2);
+			if (strcmp(attribute_names[i], "value") == 0) {
+			        printf(" Value");
+				ctx_data->bdaddr = g_strdup(attribute_values[i] );
+				printf(" bddaddr : %s \n", ctx_data->bdaddr );
 				ctx_data->found = TRUE;
+				//printf("XML parser: found value\n");
 			}
 		}
 	}
+
+        printf(" -- End ---]]\n");
 }
+
 static GMarkupParser parser = {
 	element_start, NULL, NULL, NULL, NULL
 };
@@ -53,7 +68,10 @@ static char *dmtxplugin_xml_parse_bdaddr(const char *data)
 	struct context_data ctx_data;
 	int size;
 
+
 	size = strlen(data);
+	printf("XML parser: start parsing with data size %d\n", size);
+
 	ctx_data.found = FALSE;
 	ctx_data.bdaddr = NULL;
 	ctx = g_markup_parse_context_new(&parser, 0, &ctx_data, NULL);
@@ -79,8 +97,14 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
 	adapter_reply = NULL;
 
 	conn = g_dbus_setup_bus(DBUS_BUS_SYSTEM, NULL, NULL);
+
+	printf("Dbus conn: %x\n", conn);
+
 	if (conn == NULL)
 		return NULL;
+
+
+
 
 	if (adapter == NULL) {
 		message = dbus_message_new_method_call("org.bluez", "/",
@@ -90,11 +114,13 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
 		adapter_reply = dbus_connection_send_with_reply_and_block(conn,
 								  message, -1, NULL);
 
-		dbus_message_unref(message);
+		//dbus_message_unref(message);
 
 		if (dbus_message_get_args(adapter_reply, NULL, DBUS_TYPE_OBJECT_PATH, &adapter, DBUS_TYPE_INVALID) == FALSE)
 			return NULL;
 	}
+
+        printf("Dbus adapter: %s\n", adapter);
 
 	if (adapter_reply != NULL)
 		dbus_message_unref(adapter_reply);
@@ -102,9 +128,9 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
 	reply = dbus_connection_send_with_reply_and_block(conn,
 							message, -1, NULL);
 
-	dbus_message_unref(message);
+	//dbus_message_unref(message);
 
-	if (!reply) {
+	if (reply) {
 		message = dbus_message_new_method_call("org.bluez", adapter,
 						       "org.bluez.Dmtx",
 						       "CreateOOBDevice");
@@ -114,9 +140,9 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
 		reply = dbus_connection_send_with_reply_and_block(conn,
 								  message, -1, NULL);
 
-		dbus_message_unref(message);
+		//dbus_message_unref(message);
 
-		if (!reply)
+		if (reply)
 			return;
 	} else {
 		if (dbus_message_get_args(reply, NULL, DBUS_TYPE_OBJECT_PATH, &object_path, DBUS_TYPE_INVALID) == FALSE)
@@ -129,26 +155,22 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
 }
 
 
-void dmtxplugin_gdbus_create_device(char *outfile)
+void dmtxplugin_gdbus_create_device(char *data)
 {
-        char *data;
         char *bdaddr;
         char *device_path;
-
         device_path = NULL;
-        /* parse xml file containing bdaddr */
-        if (g_file_get_contents (outfile, &data, NULL, NULL) == FALSE) {
-                log_message("Couldn't load XML file %s\n", outfile);
-                return;
-        }
+
 
         bdaddr = dmtxplugin_xml_parse_bdaddr(data);
-        log_message("Decoded bdadd: %s \n ", bdaddr);
+        printf("Decoded bdadd: %s \n ", bdaddr);
 
         device_path = gdbus_device_create(NULL, bdaddr);
-        log_message("Device created on path: %s \n ", device_path);
+        printf("Device created on path: %s \n ", device_path);
 
         dbus_connection_unref(conn);
+
+        g_free(data);
 
 }
 

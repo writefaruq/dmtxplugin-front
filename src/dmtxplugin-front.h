@@ -20,7 +20,7 @@
 #define DMTX_DATADIR "/tmp/dmtxdatadir"
 #define DMTX_SYMBOLDIR "/tmp/dmtxsymboldir"
 #define DMTX_OUTPUTDIR "/tmp/dmtxoutputdir"
-#define DMTX_SYMBOL_OUTPUT "/tmp/dmtxoutputdir/output.txt"
+#define DMTX_SYMBOL_OUTPUT "output.txt"
 
 void handle_file_creation(char *infile);
 
