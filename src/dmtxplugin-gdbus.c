@@ -103,51 +103,44 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
 	if (conn == NULL)
 		return NULL;
 
-
-
-
 	if (adapter == NULL) {
 		message = dbus_message_new_method_call("org.bluez", "/",
 						       "org.bluez.Manager",
 						       "DefaultAdapter");
 
 		adapter_reply = dbus_connection_send_with_reply_and_block(conn,
-								  message, -1, NULL);
 
-		//dbus_message_unref(message);
+								  message, -1, NULL);
+                if (adapter_reply == NULL){
+                        printf("Bluetoothd or adapter unavailable\n");
+                        return NULL;
+                } else {
+                        dbus_message_unref(adapter_reply);
+                }
 
 		if (dbus_message_get_args(adapter_reply, NULL, DBUS_TYPE_OBJECT_PATH, &adapter, DBUS_TYPE_INVALID) == FALSE)
 			return NULL;
 	}
 
+
         printf("Dbus adapter: %s\n", adapter);
 
-	if (adapter_reply != NULL)
-		dbus_message_unref(adapter_reply);
 
-	reply = dbus_connection_send_with_reply_and_block(conn,
-							message, -1, NULL);
 
-	//dbus_message_unref(message);
+        message = dbus_message_new_method_call("org.bluez", adapter,
+                                               "org.bluez.Dmtx",
+                                               "CreateOOBDevice");
+        dbus_message_iter_init_append(message, &iter);
+        dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &bdaddr);
 
-	if (reply) {
-		message = dbus_message_new_method_call("org.bluez", adapter,
-						       "org.bluez.Dmtx",
-						       "CreateOOBDevice");
-		dbus_message_iter_init_append(message, &iter);
-		dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &bdaddr);
+        reply = dbus_connection_send_with_reply_and_block(conn,
+                                                          message, -1, NULL);
 
-		reply = dbus_connection_send_with_reply_and_block(conn,
-								  message, -1, NULL);
+        if (!reply)
+                return NULL;
 
-		//dbus_message_unref(message);
-
-		if (reply)
-			return;
-	} else {
-		if (dbus_message_get_args(reply, NULL, DBUS_TYPE_OBJECT_PATH, &object_path, DBUS_TYPE_INVALID) == FALSE)
-			return;
-	}
+        if (dbus_message_get_args(reply, NULL, DBUS_TYPE_OBJECT_PATH, &object_path, DBUS_TYPE_INVALID) == FALSE)
+                return NULL;
 
 	dbus_message_unref(reply);
 
@@ -166,7 +159,11 @@ void dmtxplugin_gdbus_create_device(char *data)
         printf("Decoded bdadd: %s \n ", bdaddr);
 
         device_path = gdbus_device_create(NULL, bdaddr);
-        printf("Device created on path: %s \n ", device_path);
+        if ( device_path ) {
+                 printf("Device created on path: %s \n ", device_path);
+        } else {
+                printf("Device creation failed \n");
+        }
 
         dbus_connection_unref(conn);
 
