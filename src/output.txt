@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Header-->
+<bluez-dmtx version='0x01'>
+
+<!-- Bluetooth Address (MAC)-->
+<bdaddr>
+<text value="00:12:40:3A:1D:12" />
+</bdaddr>
+
+<!--User-freindly name -->
+<name>
+<text value="faruq" />
+</name>
+
+<!-- Link Key or PIN for paring-->
+<linkkey>
+<text value="1234" />
+</linkkey>
+
+</bluez-dmtx>
+
