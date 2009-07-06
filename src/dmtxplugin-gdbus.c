@@ -29,33 +29,23 @@ static void element_start(GMarkupParseContext *context,
 		const gchar **attribute_values, gpointer user_data, GError **err)
 {
 	struct context_data *ctx_data = user_data;
-
-        const gchar **name_cursor = attribute_names;
-        const gchar **value_cursor = attribute_values;
         char *bdaddr;
 
-	printf("[[ -- Start  ---\n");
-	if (!strcmp(element_name, "bdaddr")){
-	        //printf("XML parser: not bdaddr\n");
+	if (!strcmp(element_name, "bdaddr")) {
 		return;
 	}
 
-
 	if (!strcmp(element_name, "text") && !(ctx_data->found)) {
-	        printf("Got text of ");
 		int i;
 		for (i = 0; attribute_names[i]; i++) {
 			if (strcmp(attribute_names[i], "value") == 0) {
-			        printf(" Value");
-				ctx_data->bdaddr = g_strdup(attribute_values[i] );
-				printf(" bddaddr : %s \n", ctx_data->bdaddr );
+				ctx_data->bdaddr = g_strdup(attribute_values[i]);
 				ctx_data->found = TRUE;
-				//printf("XML parser: found value\n");
+                                /* printf(" bddaddr : %s \n", ctx_data->bdaddr ); */
 			}
 		}
 	}
 
-        printf(" -- End ---]]\n");
 }
 
 static GMarkupParser parser = {
@@ -67,7 +57,6 @@ static char *dmtxplugin_xml_parse_bdaddr(const char *data)
 	GMarkupParseContext *ctx;
 	struct context_data ctx_data;
 	int size;
-
 
 	size = strlen(data);
 	printf("XML parser: start parsing with data size %d\n", size);
@@ -93,15 +82,12 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
 	DBusMessageIter iter, reply_iter;
 
 	char *object_path = NULL;;
-
 	adapter_reply = NULL;
 
 	conn = g_dbus_setup_bus(DBUS_BUS_SYSTEM, NULL, NULL);
-
-	printf("Dbus conn: %x\n", conn);
-
+	/* printf("Dbus conn: %x\n", conn); */
 	if (conn == NULL)
-		return NULL;
+                return NULL;
 
 	if (adapter == NULL) {
 		message = dbus_message_new_method_call("org.bluez", "/",
@@ -109,23 +95,20 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
 						       "DefaultAdapter");
 
 		adapter_reply = dbus_connection_send_with_reply_and_block(conn,
-
-								  message, -1, NULL);
-                if (adapter_reply == NULL){
+                                                                message, -1, NULL );
+                if (adapter_reply == NULL) {
                         printf("Bluetoothd or adapter unavailable\n");
                         return NULL;
                 } else {
                         dbus_message_unref(adapter_reply);
                 }
 
-		if (dbus_message_get_args(adapter_reply, NULL, DBUS_TYPE_OBJECT_PATH, &adapter, DBUS_TYPE_INVALID) == FALSE)
+		if (dbus_message_get_args(adapter_reply, NULL, DBUS_TYPE_OBJECT_PATH,
+                                        &adapter, DBUS_TYPE_INVALID) == FALSE )
 			return NULL;
 	}
 
-
-        printf("Dbus adapter: %s\n", adapter);
-
-
+        printf("Bluetoothd adapter path: %s\n", adapter);
 
         message = dbus_message_new_method_call("org.bluez", adapter,
                                                "org.bluez.Dmtx",
@@ -134,19 +117,20 @@ static char *gdbus_device_create(const char *adapter, char *bdaddr)
         dbus_message_iter_append_basic(&iter, DBUS_TYPE_STRING, &bdaddr);
 
         reply = dbus_connection_send_with_reply_and_block(conn,
-                                                          message, -1, NULL);
-
+                                                          message, -1, NULL );
         if (!reply)
                 return NULL;
 
-        if (dbus_message_get_args(reply, NULL, DBUS_TYPE_OBJECT_PATH, &object_path, DBUS_TYPE_INVALID) == FALSE)
+        if (dbus_message_get_args(reply, NULL, DBUS_TYPE_OBJECT_PATH, &object_path,
+                                                        DBUS_TYPE_INVALID) == FALSE)
                 return NULL;
 
 	dbus_message_unref(reply);
 
+	dbus_connection_unref(conn);
+
 	return object_path;
 }
-
 
 void dmtxplugin_gdbus_create_device(char *data)
 {
@@ -154,20 +138,15 @@ void dmtxplugin_gdbus_create_device(char *data)
         char *device_path;
         device_path = NULL;
 
-
         bdaddr = dmtxplugin_xml_parse_bdaddr(data);
-        printf("Decoded bdadd: %s \n ", bdaddr);
+        printf("Decoded bdadd: %s \n", bdaddr);
 
         device_path = gdbus_device_create(NULL, bdaddr);
-        if ( device_path ) {
+
+        if (device_path)
                  printf("Device created on path: %s \n ", device_path);
-        } else {
-                printf("Device creation failed \n");
-        }
-
-        dbus_connection_unref(conn);
-
-        g_free(data);
-
+        else
+                printf("No response from plugin \nDevice creation failed \n");
 }
+
 

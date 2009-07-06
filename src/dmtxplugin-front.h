@@ -22,6 +22,4 @@
 #define DMTX_OUTPUTDIR "/tmp/dmtxoutputdir"
 #define DMTX_SYMBOL_OUTPUT "output.txt"
 
-void handle_file_creation(char *infile);
-
 #endif

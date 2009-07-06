@@ -104,14 +104,10 @@ typedef struct {
 
 int symbol_decode(char *infile, char *outfile);
 
-void dmtx_encode_symbol(char *infile, char *outfile);
-
 /* Internal functions  for decoding a symbol */
 DecodeOptions GetDefaultDecodeOptions(void);
 
 DmtxPassFail HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[]);
-
-void ShowDecodeUsage(int status);
 
 DmtxPassFail SetDecodeOptions(DmtxDecode *dec, DmtxImage *img, DecodeOptions *opt);
 
@@ -124,30 +120,7 @@ void WriteDiagnosticImage(DmtxDecode *dec, char *imagePath);
 
 int ScaleNumberString(char *s, int extent);
 
-
-/* Internal functions  for encoding a symbol */
-EncodeOptions GetDefaultEncodeOptions(void);
-
-DmtxPassFail HandleEncodeArgs(EncodeOptions *opt, int *argcp, char **argvp[]);
-
-void ReadInputData(int *codeBuffer, unsigned char *codeBufferSize, EncodeOptions *opt);
-
-void ShowEncodeUsage(int status);
-
-char *GetImageFormat(EncodeOptions *opt);
-
-DmtxPassFail WriteImageFile(EncodeOptions *opt, DmtxEncode *enc, char *format);
-
-DmtxPassFail WriteSvgFile(EncodeOptions *opt, DmtxEncode *enc, char *format);
-
-DmtxPassFail WriteAsciiPreview(DmtxEncode *enc);
-
-DmtxPassFail WriteCodewordList(DmtxEncode *enc);
-
-DmtxBoolean StrNCmpI(const char *s1, const char *s2, size_t n);
-
-
-/* Common utility functions */
+/* Utility functions */
 void CleanupMagick(MagickWand **wand, int magicError);
 
 void ListImageFormats(void);

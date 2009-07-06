@@ -26,49 +26,45 @@
 #include "utils.h"
 #include "dmtxplugin-front.h"
 
-void handle_file_creation( char *infile )
+static void handle_symbol(char *infile)
 {
         int img_count = 0;
         gchar *outfile = DMTX_SYMBOL_OUTPUT;
         gchar *data;
         gsize len;
-//
-//        img_count = symbol_decode(infile, outfile);
-//        printf(" From %s to %s, %d symbol decoded\n", infile, outfile, img_count);
-//
-//        if ( img_count == 1) { /* assuming successful decode */
-//                printf( "Decoded dmtx symbol to file  %s\n", outfile);
-//        } else {
-//                printf("failed to decode dmtx symbol\n");
-//        }
 
-
-        /* test file */
-        if (!g_file_test (outfile, G_FILE_TEST_IS_REGULAR)) {
-                printf("No valid file found");
+        img_count = symbol_decode(infile, outfile);
+        if (img_count == 1) { /* assuming successful decode */
+                printf( "Decoded dmtx symbol %s to file  %s\n", infile, outfile);
+        } else {
+                printf("Failed to decode dmtx symbol\n");
+                return;
         }
 
-        printf("!!!!!!!!\n");
+        /* test file */
+        if (!g_file_test(outfile, G_FILE_TEST_IS_REGULAR)) {
+                printf("No valid file found");
+                return;
+        }
 
-        //gchar *file = outfile;
         /* parse xml file containing bdaddr */
-        if (g_file_get_contents (outfile, &data, &len, NULL) == FALSE) {
+        if (g_file_get_contents(outfile, &data, &len, NULL) == FALSE) {
                 printf("Couldn't load XML file %s\n", outfile);
                 return;
         }
 
-        printf("Data len: %lu\n", len);
+        /* Send symbol data (xml format) to gdbus routines */
+        dmtxplugin_gdbus_create_device(data);
 
-       dmtxplugin_gdbus_create_device(data);
-
-        //g_free(data);
-
-
+        g_free(data);
 }
 
 int main (int argc, char *argv[])
 {
-        handle_file_creation(argv[1]);
+        if (argc == 2)
+                handle_symbol(argv[1]);
+        else
+                fprintf(stderr, "Usage: %s <dmtx-symbol-file> \n", argv[0]);
 
         return 0;
 }
