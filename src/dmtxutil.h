@@ -25,10 +25,6 @@ Contact: mike@dragonflylogic.com
 #ifndef __DMTXUTIL_H__
 #define __DMTXUTIL_H__
 
-//#ifdef HAVE_CONFIG_H
-//#include "../../config.h"
-//#endif
-
 #ifdef HAVE_SYSEXITS_H
 #include <sysexits.h>
 #else
@@ -44,13 +40,13 @@ Contact: mike@dragonflylogic.com
 extern DmtxPassFail StringToInt(int *numberInt, char *numberString, char **terminate);
 extern void FatalError(int errorCode, char *fmt, ...);
 extern char *Basename(char *path);
-/*  Used Handle*Args function */
+/*  Used in Handle*Args function
 static char *symbolSizes[] = {
       "10x10", "12x12",   "14x14",   "16x16",   "18x18",   "20x20",
       "22x22", "24x24",   "26x26",   "32x32",   "36x36",   "40x40",
       "44x44", "48x48",   "52x52",   "64x64",   "72x72",   "80x80",
       "88x88", "96x96", "104x104", "120x120", "132x132", "144x144",
        "8x18",  "8x32",   "12x26",   "12x36",   "16x36",   "16x48"
-};
+}; */
 
 #endif

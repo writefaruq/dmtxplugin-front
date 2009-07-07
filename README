@@ -1,3 +1,33 @@
+Testing guidelines
+=====================
+
+Assuming that dmtx symbol contains device info in predefined xml format this
+dmtxplugin-front  client can:
+- decode the symbol into text/xml file
+- parse bluetooth device address from that file
+- make a call to dmtx plugin gdbus interface
+- print status in consle
+
+Test Steps:
+Step #1 
+Create a dmtx symbol using dmtxwrite:
+- Get your device's bluetooth address (hcitool scan)
+- Modify bdaddr value in file sample-btinfo.xml
+- Run command: dmtxwrite -o sample-btinfo.png sample-btinfo.xml
+
+Step #2 Optionally test if symbol decode actually works
+by running: dmtxread  sample-btinfo.png
+
+Step #4 Compile and run dmtx plug-in enabled bluetoothd obtained from bluez-oob 
+git@github.com:writefaruq/bluez-oob.git 
+
+
+Step #5
+Run this tool: ./src/dmtxpluginfront ../sample-btinfo.png
+
+This should show device creation or any other messages
+
+
 Planned Dmtxplugin-front
 ========================
 
@@ -10,13 +40,15 @@ Main tasks of this program are:
 
 
 
-Main daemon modules:
+Main  modules:
 =====================    
 dmtxplugin-front.c
 symbol.c     (task #2)
 dmtxutils.c    (task #2)
 dmtxplugin-gdbus.c    (task #3)
 service-gdbus.c    (task #4)
+
+
 
 For more information, visit:
   http://github.com/writefaruq/dmtxplugin-front

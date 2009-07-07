@@ -29,7 +29,6 @@ static void element_start(GMarkupParseContext *context,
 		const gchar **attribute_values, gpointer user_data, GError **err)
 {
 	struct context_data *ctx_data = user_data;
-        char *bdaddr;
 
 	if (!strcmp(element_name, "bdaddr")) {
 		return;
@@ -79,7 +78,7 @@ static char *dmtxplugin_xml_parse_bdaddr(const char *data)
 static char *gdbus_device_create(const char *adapter, char *bdaddr)
 {
 	DBusMessage *message, *reply, *adapter_reply;
-	DBusMessageIter iter, reply_iter;
+	DBusMessageIter iter;
 
 	char *object_path = NULL;;
 	adapter_reply = NULL;

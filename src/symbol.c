@@ -225,7 +225,7 @@ DecodeOptions GetDefaultDecodeOptions(void)
    return opt;
 }
 
-
+/*
 DmtxPassFail
 HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[])
 {
@@ -277,8 +277,8 @@ HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[])
          break;
 
       switch(optchr) {
-         case 0: /* --help */
-            /* ShowDecodeUsage(EX_OK); */
+         case 0: // --help
+            // ShowDecodeUsage(EX_OK);
             break;
          case 'l':
             ListImageFormats();
@@ -326,7 +326,7 @@ HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[])
                FatalError(EX_USAGE, _("Invalid resolution specified \"%s\""), optarg);
             break;
          case 's':
-            /* Determine correct barcode size and/or shape */
+            // Determine correct barcode size and/or shape
             if(*optarg == 'a') {
                opt->sizeIdxExpected = DmtxSymbolShapeAuto;
             }
@@ -395,7 +395,7 @@ HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[])
             if(err != DmtxPass || opt->shrinkMin < 1 || *ptr != '\0')
                FatalError(EX_USAGE, _("Invalid shrink factor specified \"%s\""), optarg);
 
-            /* XXX later populate shrinkMax based on specified N-N range */
+            // XXX later populate shrinkMax based on specified N-N range
             opt->shrinkMax = opt->shrinkMin;
             break;
          case 'U':
@@ -415,6 +415,7 @@ HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[])
 
    return DmtxPass;
 }
+*/
 
 DmtxPassFail
 SetDecodeOptions(DmtxDecode *dec, DmtxImage *img, DecodeOptions *opt)

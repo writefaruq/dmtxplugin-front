@@ -24,6 +24,7 @@
 
 #include "symbol.h"
 #include "utils.h"
+#include "dmtxplugin-gdbus.h"
 #include "dmtxplugin-front.h"
 
 static void handle_symbol(char *infile)

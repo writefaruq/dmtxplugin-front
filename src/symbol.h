@@ -107,8 +107,8 @@ int symbol_decode(char *infile, char *outfile);
 /* Internal functions  for decoding a symbol */
 DecodeOptions GetDefaultDecodeOptions(void);
 
-DmtxPassFail HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[]);
-
+/* DmtxPassFail HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[]);
+*/
 DmtxPassFail SetDecodeOptions(DmtxDecode *dec, DmtxImage *img, DecodeOptions *opt);
 
 DmtxPassFail PrintStats(DmtxDecode *dec, DmtxRegion *reg, DmtxMessage *msg,
