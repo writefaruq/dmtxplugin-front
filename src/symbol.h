@@ -77,16 +77,16 @@ typedef struct {
    int shrink_min;       /* -S, --shrink (if range specified) */
    int unicode;         /* -U, --unicode */
    int verbose;         /* -v, --verbose */
-} DecodeOptions;
+} decode_options;
 
 int symbol_decode(char *infile, char *outfile);
 
 /* Internal functions  for decoding a symbol */
-DecodeOptions get_default_decode_options(void);
-DmtxPassFail set_decode_options(DmtxDecode *dec, DmtxImage *img, DecodeOptions *opt);
+decode_options get_default_decode_options(void);
+DmtxPassFail set_decode_options(DmtxDecode *dec, DmtxImage *img, decode_options *opt);
 DmtxPassFail print_stats(DmtxDecode *dec, DmtxRegion *reg, DmtxMessage *msg,
-        int img_page_index, DecodeOptions *opt);
-DmtxPassFail print_message(DmtxRegion *reg, DmtxMessage *msg, DecodeOptions *opt,
+        int img_page_index, decode_options *opt);
+DmtxPassFail print_message(DmtxRegion *reg, DmtxMessage *msg, decode_options *opt,
         const char *outfile);
 void write_diagnostic_image(DmtxDecode *dec, char *imagePath);
 int scale_number_string(char *s, int extent);

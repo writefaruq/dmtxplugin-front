@@ -8,7 +8,7 @@
 #include <dmtx.h>
 #include "dmtxutil.h"
 
-extern char *programName;
+extern char *program_name;
 
 extern void
 fatal_error(int errorCode, char *fmt, ...)
@@ -16,7 +16,7 @@ fatal_error(int errorCode, char *fmt, ...)
    va_list va;
 
    va_start(va, fmt);
-   fprintf(stderr, "%s: ", programName);
+   fprintf(stderr, "%s: ", program_name);
    vfprintf(stderr, fmt, va);
    va_end(va);
    fprintf(stderr, "\n\n");

@@ -40,7 +40,7 @@
 
 #include "symbol.h"
 
-char *programName;
+char *program_name;
 
 int symbol_decode(char *infile, char *outfile)
 {
@@ -51,7 +51,7 @@ int symbol_decode(char *infile, char *outfile)
    int img_scan_count = 0, page_scan_count = 0;
    int width, height;
    unsigned char *pxl;
-   DecodeOptions opt;
+   decode_options opt;
    DmtxImage *img;
    DmtxDecode *dec;
    DmtxRegion *reg;
@@ -184,11 +184,11 @@ int symbol_decode(char *infile, char *outfile)
 }
 
 /* Internal functions */
-DecodeOptions get_default_decode_options(void)
+decode_options get_default_decode_options(void)
 {
-   DecodeOptions opt;
+   decode_options opt;
 
-   memset(&opt, 0x00, sizeof(DecodeOptions));
+   memset(&opt, 0x00, sizeof(decode_options));
 
    /* Default options */
    opt.codewords = DmtxFalse;
@@ -220,7 +220,7 @@ DecodeOptions get_default_decode_options(void)
    return opt;
 }
 
-DmtxPassFail set_decode_options(DmtxDecode *dec, DmtxImage *img, DecodeOptions *opt)
+DmtxPassFail set_decode_options(DmtxDecode *dec, DmtxImage *img, decode_options *opt)
 {
    int err;
 
@@ -276,7 +276,7 @@ DmtxPassFail set_decode_options(DmtxDecode *dec, DmtxImage *img, DecodeOptions *
 }
 
 DmtxPassFail print_stats(DmtxDecode *dec, DmtxRegion *reg, DmtxMessage *msg,
-      int img_page_index, DecodeOptions *opt)
+      int img_page_index, decode_options *opt)
 {
    int height;
    int data_word_length;
@@ -338,7 +338,7 @@ DmtxPassFail print_stats(DmtxDecode *dec, DmtxRegion *reg, DmtxMessage *msg,
 }
 
 DmtxPassFail
-print_message(DmtxRegion *reg, DmtxMessage *msg, DecodeOptions *opt, const char *outfile)
+print_message(DmtxRegion *reg, DmtxMessage *msg, decode_options *opt, const char *outfile)
 {
    unsigned int i;
    int remaining_data_words;
@@ -397,7 +397,7 @@ void write_diagnostic_image(DmtxDecode *dec, char *imagePath)
 
    fp = fopen(imagePath, "wb");
    if (fp == NULL) {
-      perror(programName);
+      perror(program_name);
       fatal_error(EX_CANTCREAT, _("Unable to create image \"%s\""), imagePath);
    }
 
