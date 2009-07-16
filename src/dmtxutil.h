@@ -37,16 +37,8 @@ Contact: mike@dragonflylogic.com
 #define EX_IOERR       74
 #endif
 
-extern DmtxPassFail StringToInt(int *numberInt, char *numberString, char **terminate);
-extern void FatalError(int errorCode, char *fmt, ...);
-extern char *Basename(char *path);
-/*  Used in Handle*Args function
-static char *symbolSizes[] = {
-      "10x10", "12x12",   "14x14",   "16x16",   "18x18",   "20x20",
-      "22x22", "24x24",   "26x26",   "32x32",   "36x36",   "40x40",
-      "44x44", "48x48",   "52x52",   "64x64",   "72x72",   "80x80",
-      "88x88", "96x96", "104x104", "120x120", "132x132", "144x144",
-       "8x18",  "8x32",   "12x26",   "12x36",   "16x36",   "16x48"
-}; */
+extern DmtxPassFail string_to_int(int *numberInt, char *number_string, char **terminate);
+extern void fatal_error(int error_code, char *fmt, ...);
+extern char *basename(char *path);
 
 #endif

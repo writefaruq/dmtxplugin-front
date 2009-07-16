@@ -10,14 +10,8 @@
 
 extern char *programName;
 
-/**
- * @brief  Display error message and exit with error status
- * @param  errorCode error code returned to OS
- * @param  fmt error message format for printing
- * @return void
- */
 extern void
-FatalError(int errorCode, char *fmt, ...)
+fatal_error(int errorCode, char *fmt, ...)
 {
    va_list va;
 
@@ -31,53 +25,41 @@ FatalError(int errorCode, char *fmt, ...)
    exit(errorCode);
 }
 
-/**
- * @brief  Convert character string to integer
- * @param  numberInt pointer to converted integer
- * @param  numberString string to be converted
- * @param  terminate pointer to first invalid address
- * @return DmtxPass | DmtxFail
- */
 extern DmtxPassFail
-StringToInt(int *numberInt, char *numberString, char **terminate)
+string_to_int(int *numberInt, char *number_string, char **terminate)
 {
-   long numberLong;
+   long number_long;
 
-   if(!isdigit(*numberString)) {
+   if (!isdigit(*number_string)) {
       *numberInt = DmtxUndefined;
       return DmtxFail;
    }
 
    errno = 0;
-   numberLong = strtol(numberString, terminate, 10);
+   number_long = strtol(number_string, terminate, 10);
 
-   while(isspace((int)**terminate))
+   while (isspace((int)**terminate))
       (*terminate)++;
 
-   if(errno != 0 || (**terminate != '\0' && **terminate != '%')) {
+   if (errno != 0 || (**terminate != '\0' && **terminate != '%')) {
       *numberInt = DmtxUndefined;
       return DmtxFail;
    }
 
-   *numberInt = (int)numberLong;
+   *numberInt = (int)number_long;
 
    return DmtxPass;
 }
 
-/**
- * @brief  XXX
- * @param  path
- * @return pointer to adjusted path string
- */
 extern char *
-Basename(char *path)
+basename(char *path)
 {
    assert(path);
 
-   if(strrchr(path, '/'))
+   if (strrchr(path, '/'))
       path = strrchr(path, '/') + 1;
 
-   if(strrchr(path, '\\'))
+   if (strrchr(path, '\\'))
       path = strrchr(path, '\\') + 1;
 
    return path;

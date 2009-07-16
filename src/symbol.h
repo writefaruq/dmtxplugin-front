@@ -1,30 +1,26 @@
 /***************************************************************************
-Bluez-Dmtx Plugin Symbol interface
-Copyright (C) 2009, M Omar Faruque Sarker
-
-libdmtx - Data Matrix Encoding/Decoding Library
-Copyright (C) 2008, 2009 Mike Laughton
-Copyright (C) 2008 Olivier Guilyardi
-
-BlueZ - Bluetooth protocol stack for Linux
-Copyright (C) 2004-2009  Marcel Holtmann <marcel@holtmann.org>
-
-This library is free software; you can redistribute it and/or
-modify it under the terms of the GNU Lesser General Public
-License as published by the Free Software Foundation; either
-version 2.1 of the License, or (at your option) any later version.
-
-This library is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-Lesser General Public License for more details.
-
-You should have received a copy of the GNU Lesser General Public
-License along with this library; if not, write to the Free Software
-Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-
-Contact: writefaruq@gmail.com
-*/
+ *       Dmtx-Plugin-Front                                                 *
+ *       Author: Md Omar Faruque Sarker <writefaruq@gmail.com>             *
+ *       libdmtx - Data Matrix Encoding/Decoding Library                   *
+ *       Copyright (C) 2008, 2009 Mike Laughton                            *
+ *       Copyright (C) 2008 Ryan Raasch                                    *
+ *       Copyright (C) 2008 Olivier Guilyardi                              *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ *   This program is distributed in the hope that it will be useful,       *
+ *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+ *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+ *   GNU General Public License for more details.                          *
+ *                                                                         *
+ *   You should have received a copy of the GNU General Public License     *
+ *   along with this program; if not, write to the                         *
+ *   Free Software Foundation, Inc.,                                       *
+ *   59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.              *
+***************************************************************************/
 #ifndef __DMTXSYMBOL_H__
 #define __DMTXSYMBOL_H__
 
@@ -55,74 +51,45 @@ Contact: writefaruq@gmail.com
 
 #define DMTXWRITE_BUFFER_SIZE 4096
 
-
 typedef struct {
    int codewords;       /* -c, --codewords */
-   int edgeMin;         /* -e, --minimum-edge */
-   int edgeMax;         /* -E, --maximum-edge */
-   int scanGap;         /* -g, --gap */
-   int timeoutMS;       /* -m, --milliseconds */
+   int edgemin;         /* -e, --minimum-edge */
+   int edgemax;         /* -E, --maximum-edge */
+   int scangap;         /* -g, --gap */
+   int timeout;       /* -m, --milliseconds */
    int newline;         /* -n, --newline */
    int page;            /* -p, --page */
-   int squareDevn;      /* -q, --square-deviation */
+   int square_devn;      /* -q, --square-deviation */
    int dpi;             /* -r, --resolution */
-   int sizeIdxExpected; /* -s, --symbol-size */
-   int edgeThresh;      /* -t, --threshold */
-   char *xMin;          /* -x, --x-range-min */
-   char *xMax;          /* -X, --x-range-max */
-   char *yMin;          /* -y, --y-range-min */
-   char *yMax;          /* -Y, --y-range-max */
-   int correctionsMax;  /* -C, --corrections-max */
+   int size_idx_expected; /* -s, --symbol-size */
+   int edge_thresh;      /* -t, --threshold */
+   char *xmin;          /* -x, --x-range-min */
+   char *xmax;          /* -X, --x-range-max */
+   char *ymin;          /* -y, --y-range-min */
+   char *ymax;          /* -Y, --y-range-max */
+   int corrections_max;  /* -C, --corrections-max */
    int diagnose;        /* -D, --diagnose */
    int mosaic;          /* -M, --mosaic */
-   int stopAfter;       /* -N, --stop-after */
-   int pageNumbers;     /* -P, --page-numbers */
+   int stop_after;       /* -N, --stop-after */
+   int page_numbers;     /* -P, --page-numbers */
    int corners;         /* -R, --corners */
-   int shrinkMax;       /* -S, --shrink */
-   int shrinkMin;       /* -S, --shrink (if range specified) */
+   int shrink_max;       /* -S, --shrink */
+   int shrink_min;       /* -S, --shrink (if range specified) */
    int unicode;         /* -U, --unicode */
    int verbose;         /* -v, --verbose */
 } DecodeOptions;
 
-typedef struct {
-   char *inputPath;
-   char *outputPath;
-   char *format;
-   int codewords;
-   int marginSize;
-   int moduleSize;
-   int scheme;
-   int preview;
-   int rotate;
-   int sizeIdx;
-   int color[3];
-   int bgColor[3];
-   int mosaic;
-   int dpi;
-   int verbose;
-} EncodeOptions;
-
 int symbol_decode(char *infile, char *outfile);
 
 /* Internal functions  for decoding a symbol */
-DecodeOptions GetDefaultDecodeOptions(void);
-
-/* DmtxPassFail HandleDecodeArgs(DecodeOptions *opt, int *fileIndex, int *argcp, char **argvp[]);
-*/
-DmtxPassFail SetDecodeOptions(DmtxDecode *dec, DmtxImage *img, DecodeOptions *opt);
-
-DmtxPassFail PrintStats(DmtxDecode *dec, DmtxRegion *reg, DmtxMessage *msg,
-      int imgPageIndex, DecodeOptions *opt);
-
-DmtxPassFail PrintMessage(DmtxRegion *reg, DmtxMessage *msg, DecodeOptions *opt, const char *outfile);
-
-void WriteDiagnosticImage(DmtxDecode *dec, char *imagePath);
-
-int ScaleNumberString(char *s, int extent);
-
-/* Utility functions */
-void CleanupMagick(MagickWand **wand, int magicError);
-
-void ListImageFormats(void);
+DecodeOptions get_default_decode_options(void);
+DmtxPassFail set_decode_options(DmtxDecode *dec, DmtxImage *img, DecodeOptions *opt);
+DmtxPassFail print_stats(DmtxDecode *dec, DmtxRegion *reg, DmtxMessage *msg,
+        int img_page_index, DecodeOptions *opt);
+DmtxPassFail print_message(DmtxRegion *reg, DmtxMessage *msg, DecodeOptions *opt,
+        const char *outfile);
+void write_diagnostic_image(DmtxDecode *dec, char *imagePath);
+int scale_number_string(char *s, int extent);
+void cleanup_magick(MagickWand **wand, int magicError);
 
 #endif
