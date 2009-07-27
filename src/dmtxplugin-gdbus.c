@@ -148,4 +148,46 @@ void dmtxplugin_gdbus_create_device(char *data)
                 printf("No response from plugin \nDevice creation failed \n");
 }
 
+void dmtxplugin_xml_parse_oobtags(char *data)
+{
+
+}
+
+void dmtxplugin_xml_parse_len(char *data)
+{
+
+}
+
+static void gdbus_create_paired_device(const char *adapter, char *bdaddr,
+ uint8_t *oobtags, int len)
+{
+
+}
+
+void dmtxplugin_gdbus_create_paired_oob_device(char *data)
+{
+        /* test xml file and either pass as raw xml or oob data
+         first test as oob data */
+        char *bdaddr;
+        char *device_path;
+        uint8_t *oobtags;
+	int len;
+        device_path = NULL;
+
+        bdaddr = dmtxplugin_xml_parse_bdaddr(data);
+        printf("Decoded bdadd: %s \n", bdaddr);
+
+        oobtags = dmtxplugin_xml_parse_oobtags(data);
+        len = dmtxplugin_xml_parse_len(data);
+
+        device_path = gdbus_create_paired_device(NULL, bdaddr, oobtags, len);
+
+        if (device_path)
+                 printf("Paired Device created on path: %s \n ", device_path);
+        else {
+                printf("No response from plugin \n");
+                printf("Paired Device creation failed\n");
+        }
+
+}
 

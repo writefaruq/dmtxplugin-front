@@ -26,6 +26,7 @@
 
 #include "utils.h"
 
- void dmtxplugin_gdbus_create_device(char *outfile);
+void dmtxplugin_gdbus_create_device(char *data);
+void dmtxplugin_gdbus_create_paired_oob_device(char *data);
 
  #endif
