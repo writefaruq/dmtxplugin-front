@@ -5,7 +5,7 @@
 <mandatorypart>
 <!-- Length -->
 <length>
-    <unit16 value="0x002B" />
+    <unit16 value="0x0030" />
 </length>
 <!-- Bluetooth Address (MAC)-->
 <bdaddr>
@@ -19,42 +19,36 @@
     <length>
         <unit8 value="0x04" />
     </length>
-    <data>
-        <eirdatatype>
-            <unit8 value="0x0D" />
-        </eirdatatype>
-        <eirdata>
-            <unit32 value="0x1a210c">
-        </eirdata>
-    </data>
+    <eirdatatype>
+        <unit8 value="0x0D" />
+    </eirdatatype>
+    <eirdata>
+        <unit32 value="0x1a210c">
+    </eirdata>
 </eirtag>
 <!-- Simple Pairing Hash C -->
 <eirtag>
     <length>
-        <unit8 value="0x08" />
+        <unit8 value="0x11" />
     </length>
-    <data>
-        <eirdatatype>
+    <eirdatatype>
             <unit8 value="0x0E" />
-        </eirdatatype>
-        <eirdata>
+    </eirdatatype>
+    <eirdata>
            <text value="D8BAEC0D2B17AA68F2479201D479EE05" />
-        </eirdata>
-    </data>
+    </eirdata>
 </eirtag>
 <!-- Simple Pairing Randomizer R -->
 <eirtag>
     <length>
-        <unit8 value="0x08" />
+        <unit8 value="0x11" />
     </length>
-    <data>
-        <eirdatatype>
+    <eirdatatype>
             <unit8 value="0x0F" />
-        </eirdatatype>
-        <eirdata>
+    </eirdatatype>
+    <eirdata>
            <text value="7783A070077AFEAEEBBF28500DA180B1" />
-        </eirdata>
-    </data>
+    </eirdata>
 </eirtag>
 </optionalpart>
 </oobdatablock>
