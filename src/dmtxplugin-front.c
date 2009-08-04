@@ -54,8 +54,11 @@ static void handle_symbol(char *infile)
                 return;
         }
 
-        /* Send symbol data (xml format) to gdbus routines */
-        dmtxplugin_gdbus_create_device(data);
+        /* Send symbol data to gdbus routines */
+        //dmtxplugin_gdbus_create_device(data);
+
+        /* SSP version */
+        dmtxplugin_gdbus_create_paired_oob_device(data);
 
         g_free(data);
 }

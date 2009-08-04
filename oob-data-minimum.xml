@@ -5,32 +5,32 @@
 <mandatorypart>
 <!-- Length -->
 <length>
-    <unit16 value="0x0030" />
+    <unit16 value="0x30" />
 </length>
 <!-- Bluetooth Address (MAC)-->
 <bdaddr>
-    <text value="0x0012403A1D34" />
+    <text value="0012403A1D34" />
 </bdaddr>
 </mandatorypart>
 <optionalpart>
 <!-- Represented as EIR Tags -->
 <!-- Class of Device -->
 <eirtag>
-    <length>
+    <len>
         <unit8 value="0x04" />
-    </length>
+    </len>
     <eirdatatype>
         <unit8 value="0x0D" />
     </eirdatatype>
     <eirdata>
-        <unit32 value="0x1a210c">
+        <unit32 value="0x1a210c" />
     </eirdata>
 </eirtag>
 <!-- Simple Pairing Hash C -->
 <eirtag>
-    <length>
+    <len>
         <unit8 value="0x11" />
-    </length>
+    </len>
     <eirdatatype>
             <unit8 value="0x0E" />
     </eirdatatype>
@@ -40,9 +40,9 @@
 </eirtag>
 <!-- Simple Pairing Randomizer R -->
 <eirtag>
-    <length>
+    <len>
         <unit8 value="0x11" />
-    </length>
+    </len>
     <eirdatatype>
             <unit8 value="0x0F" />
     </eirdatatype>
